@@ -1,0 +1,47 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app" class="app">
+  <div>{{ message }}</div>
+  <div v-if="!hasJoke">There is no Joke yet!</div>
+  <div v-if="hasJoke">
+    <h1>{{joke["0"]["setup"]}}</h1>
+    <h2>{{joke["0"]["punchline"]}}</h2>
+  </div>
+  <button v-on:click="getJoke">get a Joke</button>
+</div>
+
+<script>
+  var app = new Vue({
+    el: "#app",
+    data: {
+      message: "Hello World!",
+      hasJoke: false,
+      joke: "",
+    },
+    methods: {
+      getJoke: async function () {
+        this.hasJoke = true;
+        let theJoke = await (
+          await fetch(
+            "https://official-joke-api.appspot.com/jokes/programming/random"
+          )
+        ).json();
+        this.joke = theJoke;
+      },
+    },
+  });
+</script>
+
+<style>
+  .app {
+    text-align: center;
+    font-size: 40px;
+    font-style: italic;
+  }
+  h1 {
+    color: green;
+  }
+  h2 {
+    color: red;
+  }
+</style>
